@@ -6,6 +6,8 @@ import random
 class PlayerShip(Sprite):
 
     def __init__(self, screen):
+        super().__init__()
+
         ship = pygame.image.load(os.path.join('images', 'sprite_pack_1', 'PNG', 'playerShip1_red.png'))
 
         self.image = ship
@@ -54,9 +56,6 @@ class Laser(Sprite):
         self.speed = 6
 
     def update(self):
-        # USING PRINT RECT TO CHECK COLLISIONS W/ENEMY
-        #print(self.rect)
-
         self.y -= self.speed
         self.rect.y = self.y
 
@@ -66,10 +65,7 @@ class Laser(Sprite):
 
 class Enemy(Sprite):
 
-    # MAKE A CHILD CLASS OF THE ENEMY WITH DIFFERENT VERSIONS HAVIONG DIFERNT
-    # SPRITES AND HEALTH LEVELS.  SOME ENEMIES CAN SHOOT LASERS BACK AT ME??
-    # class Enemy2(Enemy) Has 2 health and shoots lasers, goes left and right as it goes down screen
-    # class Enemy3(Enemy) Has 2 health and sits at top of screen shooting lasers at me going left and right?
+    # Ideas: SOME ENEMIES CAN SHOOT LASERS BACK AT ME??
 
     def __init__(self, screen):
         super(Enemy, self).__init__()
@@ -85,8 +81,6 @@ class Enemy(Sprite):
         self.y = float(self.rect.y)
 
     def update(self):
-        #USING PRINT RECT TO CHECK COLLISIONS W/LASER
-        #print(self.rect)
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
@@ -121,8 +115,35 @@ class Enemy2(Enemy):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
-        if self.rect.top >= 750 or self.rect.right < -10  or self.rect.left > 600:
+        if self.rect.top >= 750 or self.rect.right < -10 or self.rect.left > 600:
             self.rect.x = random.randrange(450 - self.rect.width)
             self.rect.y = random.randrange(-800, -80)
             self.speedy = random.randrange(1, 6)
+
+
+class Enemy3(Enemy):
+
+    def __init__(self, screen):
+        enemy_image = pygame.image.load(os.path.join('images', 'sprite_pack_1', 'PNG', 'Enemies', 'enemyBlack3.png'))
+        super(Enemy, self).__init__()
+
+        self.screen = screen
+        self.image = enemy_image
+        self.rect = self.image.get_rect()
+        self.rect.y = -600
+        self.rect.x = random.randrange(450 - self.rect.width)
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
+        self.health = 3
+        self.speedy = random.randrange(3, 7)
+        self.speedx = random.randrange(-1,1)
+
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+
+        if self.rect.top >= 750 or self.rect.right < -10 or self.rect.left > 600:
+            self.rect.x = random.randrange(450 - self.rect.width)
+            self.rect.y = random.randrange(-800, -80)
+            self.speedy = random.randrange(3, 7)
 

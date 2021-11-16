@@ -17,7 +17,7 @@ class Button:
         self.x = x
         self.y = y
 
-        self.font = pygame.font.SysFont("Medula One", 36)
+        self.font = pygame.font.SysFont(None, 36)
         self.rect = pygame.Rect(x, y, width, height)
         self.rect.topleft = (x, y)
 

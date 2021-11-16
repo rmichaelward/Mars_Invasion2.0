@@ -1,6 +1,6 @@
 import pygame, sys
-import os
-from ships import Laser, Enemy, Enemy2
+
+from ships import Laser
 from pygame.sprite import Group
 
 lasers_group = Group()
@@ -44,45 +44,21 @@ def check_keyup_events(event, ship):
 
 
 def fire_laser(screen, ship):
-    new_laser = Laser(screen, ship)
-    lasers_group.add(new_laser)
+    if len(lasers_group) <= 3:
+        new_laser = Laser(screen, ship)
+        lasers_group.add(new_laser)
 
 
-# THESE ADD ENEMIES TO GROUP< NEED TO DEFINE COLLISIONS AND DELETE THEM FROM SCREEN AND GROUP
-# THEN SET UP LEVEL OF WHEN TO SPAWN AND HOW MANY TO SPAWN
-def spawn_Enemy(screen):
-    new_enemy = Enemy(screen)
-    enemy_group.add(new_enemy)
-
-
-def spawn_Enemy2(screen):
-    new_enemy = Enemy2(screen)
-    enemy_group.add(new_enemy)
-
-
-def check_collisions(ship):
-    global score
-    laser_collide_enemy = pygame.sprite.groupcollide(lasers_group, enemy_group, True, True)
+'''def check_collisions(ship):
     hits = pygame.sprite.spritecollide(ship, enemy_group, False)
     if hits:
-        sys.exit()
-    #if laser_collide_enemy:
-        print('collide')
-        # Increase score
-        #score += 1
-        #print(score)
+        sys.exit()'''
 
-
-'''if laser_collide_enemy: #NOT WORKING BEACUE IT IS CHECKING FOR TRUE, BUT THIS RETURNS THE SPROTE??
-        print("!")
-    for laser in lasers_group.sprites():
-        if pygame.sprite.spritecollide(laser, enemy_group, True, True):
-            #explosion #NEED TO MAKE THIS WORK
-            #lasers_group.remove(laser)
-            #enemy_group.remove(enemy)
-            kill(laser)
-            print("LASER")
-
-        if pygame.sprite.spritecollideany(ship, enemy_group):
-            enemy_group.remove(enemy)
-            #ADD LOSING A SHIP LIFE'''
+def update_lasers():
+    for laser in lasers_group:
+        laser.update()
+        laser.draw()
+        # Check and delete lasers that leave the screen
+        for laser in lasers_group:
+            if laser.rect.bottom <= 0:
+                lasers_group.remove(laser)

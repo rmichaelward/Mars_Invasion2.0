@@ -1,8 +1,9 @@
-import pygame, sys
-import os
+import pygame, sys, os
 
-from buttons.button import Button
+from button import Button
 from levels import run_game
+from settings_menu import change_settings
+from high_scores import check_high_score
 
 pygame.init()
 
@@ -38,18 +39,12 @@ def main_menu():
                 run_game()
 
         if high_scores_button.collides(pos):
-        #    if click:
-        #        get_high_scores()
             if click:
-                pygame.quit()
-                sys.exit()
+                check_high_score()
 
         if settings_button.collides(pos):
-        #    if click:
-        #        change_settings()
             if click:
-                pygame.quit()
-                sys.exit()
+                change_settings()
 
         if quit_button.collides(pos):
             if click:
