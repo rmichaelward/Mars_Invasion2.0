@@ -48,12 +48,6 @@ def fire_laser(screen, ship):
         new_laser = Laser(screen, ship)
         lasers_group.add(new_laser)
 
-
-'''def check_collisions(ship):
-    hits = pygame.sprite.spritecollide(ship, enemy_group, False)
-    if hits:
-        sys.exit()'''
-
 def update_lasers():
     for laser in lasers_group:
         laser.update()

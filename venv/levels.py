@@ -3,6 +3,7 @@ import os, sys
 from scoreboard import Scoreboard
 from pygame.sprite import Group
 
+from network.scores import ScoresModel
 from ships import PlayerShip, Enemy, Enemy2, Enemy3
 from game_functions import check_events, lasers_group, enemy_group, update_lasers
 
@@ -16,6 +17,10 @@ def run_game():
     bgY2 = bg.get_height() * -1
     scoreboard = Scoreboard(screen)
     clock = pygame.time.Clock()
+
+    #loading music/ playing it
+    pygame.mixer.music.load(os.path.join('music', 'Battle_theme.wav'))
+    pygame.mixer.music.play()
 
     ship = PlayerShip(screen)
     player_ships = Group()
@@ -45,8 +50,26 @@ def run_game():
 
         # NEED TO UPDATE BELOW TO END THE GAME AND SEND HIGH SCORES
         if scoreboard.ships_left == 0:
-            pygame.quit()
-            sys.exit()
+            #assign game score to score
+            score = scoreboard.save_score()
+            print(score)
+            print(type(score))
+            #get user input on the name they want saved for leaderboard
+            #Need to update this to make it in game, not in terminal
+            username = input('What is your name')
+            print(username)
+            print(type(username))
+            new_score = ScoresModel.save_score(username, score)
+            #Show High Scores
+            #Need to add a new screen to show scores
+            top_scores = ScoresModel.get_scores()
+            for dicts in top_scores:
+                print('Player:', dicts['user'])
+                print('Score:', dicts['score'])
+            #Need to add a button on the screen for going back to the main menu
+            from main import main_menu
+            main_menu()
+
         # redraw enemies
         for enemy in enemy_group:
             enemy.update()
@@ -64,7 +87,7 @@ def run_game():
                 scoreboard.score += 10 * num_enemy_collisions
             pygame.sprite.groupcollide(lasers_group, enemy_group, True, True)
         scoreboard.show_score()
-        if scoreboard.score >= 50:
+        if scoreboard.score >= 150:
             run_level_two()
 
         pygame.display.update()
@@ -94,8 +117,22 @@ def run_game():
 
             # NEED TO UPDATE BELOW TO END THE GAME AND SEND HIGH SCORES
             if scoreboard.ships_left == 0:
-                pygame.quit()
-                sys.exit()
+                # assign game score to score
+                score = scoreboard.save_score()
+                print(score)
+                print(type(score))
+                # get user input on the name they want saved for leaderboard
+                # Need to update this to make it in game, not in terminal
+                username = input('What is your name')
+                print(username)
+                print(type(username))
+                ScoresModel.save_score(username, score)
+                # Show High Scores
+                # Need to add a new screen to show scores
+                ScoresModel.get_scores()
+                # Need to add a button on the screen for going back to the main menu
+                from main import main_menu
+                main_menu()
             # redraw enemies
             for enemy in enemy_group:
                 enemy.update()
@@ -113,7 +150,7 @@ def run_game():
                     scoreboard.score += 10 * num_enemy_collisions
                 pygame.sprite.groupcollide(lasers_group, enemy_group, True, True)
             scoreboard.show_score()
-            if scoreboard.score >= 100:
+            if scoreboard.score >= 350:
                 run_level_three()
 
             pygame.display.update()
@@ -143,8 +180,22 @@ def run_game():
 
                 # NEED TO UPDATE BELOW TO END THE GAME AND SEND HIGH SCORES
                 if scoreboard.ships_left == 0:
-                    pygame.quit()
-                    sys.exit()
+                    # assign game score to score
+                    score = scoreboard.save_score()
+                    print(score)
+                    print(type(score))
+                    # get user input on the name they want saved for leaderboard
+                    # Need to update this to make it in game, not in terminal
+                    username = input('What is your name')
+                    print(username)
+                    print(type(username))
+                    ScoresModel.save_score(username, score)
+                    # Show High Scores
+                    # Need to add a new screen to show scores
+                    ScoresModel.get_scores()
+                    # Need to add a button on the screen for going back to the main menu
+                    from main import main_menu
+                    main_menu()
                 # redraw enemies
                 for enemy in enemy_group:
                     enemy.update()
@@ -162,7 +213,15 @@ def run_game():
                         scoreboard.score += 10 * num_enemy_collisions
                     pygame.sprite.groupcollide(lasers_group, enemy_group, True, True)
                 scoreboard.show_score()
-                #if scoreboard.score >= 1000:
+                if scoreboard.score >= 1000:
+                    '''add_score(data)
+                    data = {score: number, username: string}'''
+                    #Add new screen fpor end game and a method on that screen for a user to input their name
+                    #alternatively, have user input name before game starts? and have that track into this area
+                    #the second idea might be hard to make work, not sure how to access that info in this file.
+                    #maybe add a screen before the game starts where the user puts in their name
+                    #their name is an attribute of an object and you can access that object anywhere in the program
+                    top_scores = ScoresModel.save_score(username, Scoreboard.score)
                     #ADD END OF GAME
 
                 pygame.display.update()

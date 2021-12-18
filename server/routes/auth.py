@@ -6,15 +6,6 @@ scores_database = Scores()
 
 auth = Blueprint("auth", __name__)
 
-@auth.route("/users")
-def get_users():
-    return jsonify(storage_db.get_users())
-
-@auth.route("/rooms")
-def get_rooms():
-    return jsonify(storage_db.get_rooms())
-
-
 @auth.route("/scores")
 def get_scores():
     return jsonify(scores_database.get_scores())
@@ -28,6 +19,15 @@ def save_scores():
         return jsonify({"status": False})
 
     return jsonify({"status": True})
+
+
+'''@auth.route("/users")
+def get_users():
+    return jsonify(storage_db.get_users())
+
+@auth.route("/rooms")
+def get_rooms():
+    return jsonify(storage_db.get_rooms())
 
 @auth.route("/register", methods=["POST"])
 def create_user():
@@ -51,4 +51,4 @@ def create_room():
 def join_room():
     room_id = request.form['id']
     user = request.form['user']
-    return jsonify(storage_db.join_room(room_id, user))
+    return jsonify(storage_db.join_room(room_id, user))'''

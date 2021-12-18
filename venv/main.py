@@ -7,6 +7,10 @@ from high_scores import check_high_score
 
 pygame.init()
 
+#loading music/ playing it
+pygame.mixer.music.load(os.path.join('music', 'instrumental1_16bit.wav'))
+pygame.mixer.music.play()
+
 clock = pygame.time.Clock()
 
 def main_menu():
@@ -56,6 +60,11 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    click = False
 
             if event.type == pygame.QUIT:
                 pygame.quit()
